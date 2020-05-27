@@ -8,6 +8,13 @@ use App\Http\Controllers\ApiController;
 
 class SellerController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('scope:read-general')->only('show');
+        $this->middleware('can:view,seller')->only('show');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +22,8 @@ class SellerController extends ApiController
      */
     public function index()
     {
+        $this->allowedAdminAction();
+
         if($data = parent::getCache()) return $data;
 
         $sellers = Seller::has('products')->get();

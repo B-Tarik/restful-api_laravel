@@ -8,6 +8,11 @@ use App\Http\Controllers\ApiController;
 
 class CategoryTransactionController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +20,8 @@ class CategoryTransactionController extends ApiController
      */
     public function index(Category $category)
     {
+        $this->allowedAdminAction();
+
         if($data = parent::getCache()) return $data;
 
         $transactions = $category->products()
